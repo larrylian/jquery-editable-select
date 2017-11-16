@@ -7,13 +7,12 @@
 
 +(function ($) {
 	// jQuery Editable Select
-	EditableSelect = function (select, options) {
-		var that     = this;
-		
+	var EditableSelect = function (select, options) {
 		this.options = options;
 		this.$select = $(select);
 		this.$input  = $('<input type="text" autocomplete="off">');
 		this.$list   = $('<ul class="es-list">');
+        this.$clear = $("<span class='es-clear-icon'>");
 		this.utility = new EditableSelectUtility(this);
 		
 		if (['focus', 'manual'].indexOf(this.options.trigger) < 0) this.options.trigger = 'focus';
@@ -22,12 +21,14 @@
 		
 		// create text input
 		this.$select.replaceWith(this.$input);
+        this.$input.after(this.$clear);
 		this.$list.appendTo(this.options.appendTo || this.$input.parent());
 		
 		// initalization
 		this.utility.initialize();
 		this.utility.initializeList();
 		this.utility.initializeInput();
+        this.utility.initializeClear();
 		this.utility.trigger('created');
 	}
 	EditableSelect.DEFAULTS = { filter: true, effects: 'default', duration: 'fast', trigger: 'focus' };
@@ -111,9 +112,26 @@
 		this.$list.remove();
 		this.$select.removeData('editable-select');
 	};
-	
+    /**
+     * 显示清空图标
+     */
+    EditableSelect.prototype.showClear = function () {
+        if (this.$input.val() != "") {
+            this.$clear.show();
+        } else {
+            this.$clear.hide();
+        }
+    };
+    /**
+     * 清除内容
+     */
+    EditableSelect.prototype.clearValue = function () {
+        this.$input.val("");
+        this.showClear();
+        this.filter();
+    };
 	// Utility
-	EditableSelectUtility = function (es) {
+	var EditableSelectUtility = function (es) {
 		this.es = es;
 	}
 	EditableSelectUtility.prototype.initialize = function () {
@@ -155,16 +173,18 @@
 				break;
 		}
 		that.es.$input.on('input keydown', function (e) {
+			var visibles;
+			var selectedIndex;
 			switch (e.keyCode) {
 				case 38: // Up
-					var visibles = that.es.$list.find('li.es-visible:not([disabled])');
-					var selectedIndex = visibles.index(visibles.filter('li.selected'));
+					visibles = that.es.$list.find('li.es-visible:not([disabled])');
+					selectedIndex = visibles.index(visibles.filter('li.selected'));
 					that.highlight(selectedIndex - 1);
 					e.preventDefault();
 					break;
 				case 40: // Down
-					var visibles = that.es.$list.find('li.es-visible:not([disabled])');
-					var selectedIndex = visibles.index(visibles.filter('li.selected'));
+					visibles = that.es.$list.find('li.es-visible:not([disabled])');
+					selectedIndex = visibles.index(visibles.filter('li.selected'));
 					that.highlight(selectedIndex + 1);
 					e.preventDefault();
 					break;
@@ -185,6 +205,18 @@
 			}
 		});
 	};
+    /**
+     * 初始化清除icon
+     */
+    EditableSelectUtility.prototype.initializeClear = function () {
+        var that = this;
+        if (that.es.options.clear) {
+            that.es.$input.on("blur", $.proxy(that.es.showClear, that.es));
+            that.es.$clear.on("click", $.proxy(that.es.clearValue, that.es))
+        } else {
+            that.es.$clear.hide();
+        }
+    };
 	EditableSelectUtility.prototype.highlight = function (index) {
 		var that = this;
 		that.es.show();
