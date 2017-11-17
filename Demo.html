@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>editable-select-demo</title>
+    <link rel="stylesheet" href="src/jquery-editable-select.css"/>
+    <style>
+        .editinput {
+            border-radius: 5px;
+            width: 150px;
+            height: 30px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <select name="name" class="editinput" id="name">
+        <option value="">--</option>
+        <option value="1">larry</option>
+        <option value="2">nacy</option>
+        <option value="3">nacy1</option>
+        <option value="4">nacy2</option>
+        <option value="5">nacy3</option>
+        <option value="6">naggg</option>
+        <option value="7">2222</option>
+    </select>
+</div>
+
+<div>
+    <select name="name" class="editinput" id="name2">
+        <option value="">--</option>
+        <option value="1">larry</option>
+        <option value="2">larcy</option>
+        <option value="3">nacy1</option>
+        <option value="4">nacy2</option>
+        <option value="5">nacy3</option>
+        <option value="6">naggg</option>
+        <option value="7">2222</option>
+    </select>
+</div>
+</body>
+</html>
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.js"></script>
+<script src="src/jquery-editable-select.js"></script>
+<script type="text/javascript">
+    $("#name").editableSelect({
+     filter: true,
+     effects: 'slide'
+    });
+    $("#name2").editableSelect({
+        clear: true,
+        filter: true,
+        effects: 'slide',
+        onSelect: function () {
+            alert("dd");
+        }
+    });
+</script>

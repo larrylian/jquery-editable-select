@@ -213,6 +213,7 @@
         if (that.es.options.clear) {
             that.es.$input.on("blur", $.proxy(that.es.showClear, that.es));
             that.es.$clear.on("click", $.proxy(that.es.clearValue, that.es))
+			that.es.showClear();
         } else {
             that.es.$clear.hide();
         }
