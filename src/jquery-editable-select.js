@@ -4,7 +4,7 @@
  *
  * Source on GitHub @ https://github.com/indrimuska/jquery-editable-select
  */
-
+import "./jquery-editable-select.css";
 +(function ($) {
 	// jQuery Editable Select
 	var EditableSelect = function (select, options) {
