@@ -1,5 +1,5 @@
 /**
- * Created by wangxuanbo on 2017/10/29.
+ * Created by larrylian 2017.11.17
  */
 const path=require('path');
 const extractTextPlugin = require('extract-text-webpack-plugin');   //css分离插件，需要安装

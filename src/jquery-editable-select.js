@@ -30,7 +30,7 @@ import "./jquery-editable-select.css";
 		this.utility.initializeInput();
         this.utility.initializeClear();
 		this.utility.trigger('created');
-	}
+	};
 	EditableSelect.DEFAULTS = { filter: true, effects: 'default', duration: 'fast', trigger: 'focus' };
 	EditableSelect.prototype.filter = function () {
 		var hiddens = 0;
